@@ -1,0 +1,77 @@
+interface types {
+
+    /**
+     * record to represent the response of the unwind-pnl function
+     * - code: response code (0 for success, else failure)
+     * - message: description of the response 
+     * - data: unwind-pnl data
+     */
+    record unwind-pnl-response {
+        code: s16,
+        message: string,
+        data: unwind-pnl
+    }
+
+    /**
+     * record to represent the response of the unwind-pnl function
+     * - unwind-headers: list of totals of the pnl
+     * - current-wallet-balances: pnl of the current wallet balances
+     * - jabra-deposits: pnl of the jabra deposits
+     * - collateral-owed-to-clients: pnl of the collateral owed to clients
+     * - deribit-positions-pnl: pnl of the deribit positions
+     * - client-pnl: pnl of the client
+     */
+    record unwind-pnl {
+        unwind-pnl-headers: list<unwind-pnl-header>,
+        current-wallet-balances: pnl,
+        jabra-deposits: pnl,
+        collateral-owed-to-clients: pnl,
+        live-options-pnl: pnl,
+        deribit-positions-pnl: pnl,
+        client-pnl: pnl
+    }
+
+    /**
+     * record to represent the header of the pnl
+     * - name: the name of the computed total
+     * - value: the total value
+     * - short-value: shorten value ($1.2M)
+     */
+    record unwind-pnl-header {
+        name: string,
+        value: f64,
+        short-value: string
+    }
+
+    /**
+     * record to represent the pnl
+     * - sub-total: the sub-total of the pnl
+     * - data: list of pnl-detail
+     */
+    record pnl {
+        sub-total: f64,
+        data: list<pnl-detail>
+    }
+
+    /**
+     * record to represent the pnl-detail
+     * - currency: the currency of the pnl
+     * - exchange: the exchange of the pnl
+     * - amount: the amount of the pnl
+     * - equity-usd: the equity in usd
+     * - current-value-usd: the current value in usd
+     * - counterparty: the counterparty
+     * - exercised-balance: the exercised balance
+     * - interest-payment: the interest payment
+     */
+    record pnl-detail {
+        currency: string,
+        exchange: option<string>,
+        amount: option<f64>,
+        equity-usd: option<f64>,
+        current-value-usd: option<f64>,
+        counterparty: option<string>,
+        exercised-balance: option<f64>,
+        interest-payment: option<f64>
+    }
+}
